@@ -1,11 +1,18 @@
-import pandas as pd
+import sys
 import os
+import pandas as pd
+
 
 df = pd.DataFrame(columns=['name', 'date', 'status'])
-
 filename = "tasks.csv"
-current_dir = os.path.dirname(os.path.abspath(__file__))
+
+if getattr(sys, 'frozen', False):
+    current_dir = os.path.dirname(sys.executable)
+else:
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+
 file_path = os.path.join(current_dir, filename)
+
 
 
 def menu(): 
@@ -14,13 +21,12 @@ def menu():
     if df.empty:
         new_task()
     else :
-        print("go")
         main_menu()
 
 
 def main_menu():
     while True:
-        print("\nWhat do you want to do?")
+        print("\nWhat do you want to do? ")
         print("1 - Add a task")
         print("2 - Modify a task")
         print("3 - Delete a task")
@@ -66,22 +72,25 @@ def adding():
     return df
 
 def modify_task():
+    global df
     print(df)
-    num=input("what the task that you want to change ?:")
+    num=input("what the task that you want to change ?: ")
     df.loc[num, 'name'] = input('What is the task name?')
     df.loc[num, 'date'] = input('What is the task date?')
     df.loc[num, 'status'] = get_option()
     return df
 
 def show_tasks():
+    global df
     print(df)
-    see=input('what task you want to check')
+    see=int(input('what task you want to check?: '))
     return print(df.loc[see])
 
 
 def delete_task():
+    global df
     print(df)
-    delet=input('what the task you want to delet')
+    delet=int(input('what the task you want to delet ?: '))
     df.drop(index=delet, inplace=True)
     return df
 
